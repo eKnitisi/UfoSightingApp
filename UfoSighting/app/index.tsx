@@ -1,5 +1,10 @@
+"use dom"
+
 import { Text, View } from "react-native";
 import {useState, useEffect} from "react";
+import { MapContainer, Marker, Popup, SVGOverlay, TileLayer, useMap, useMapEvents } from "react-leaflet";
+import 'leaflet/dist/leaflet.css';
+import L, { LatLngTuple } from "leaflet";
 
 export default function Index() {
 
@@ -40,6 +45,7 @@ enum Status {
   } ,[]);
 
   return (
+    
     <View
       style={{
         flex: 1,
