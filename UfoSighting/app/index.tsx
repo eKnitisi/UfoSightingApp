@@ -4,9 +4,22 @@ import { Text, View } from "react-native";
 import {useState, useEffect} from "react";
 import { MapContainer, Marker, Popup, SVGOverlay, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
-import L, { LatLngTuple } from "leaflet";
+import { LatLngTuple } from "leaflet";
+import * as L from "leaflet";
+
+
 
 export default function Index() {
+
+  const map = L.map('map').setView([51.505, -0.09], 13);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+  
+  L.marker([51.505, -0.09]).addTo(map)
+    .bindPopup('A Leaflet marker in TypeScript!')
+    .openPopup();
 
   interface UfoSighting {
     id: number;
@@ -53,7 +66,11 @@ enum Status {
         alignItems: "center",
       }}
     >
-      <Text>{ufoData[0].id}</Text>
+<MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "100vh", width: "100%" }}>
+  
+    
+
+</MapContainer>
     </View>
   );
 }
