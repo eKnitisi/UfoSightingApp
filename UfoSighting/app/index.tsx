@@ -21,8 +21,14 @@ export default function Index() {
         attribution: '&copy; OpenStreetMap contributors'
       }).addTo(map);
 
-      L.marker([51.505, -0.09]).addTo(map)
+      L.marker([51.505, -0.15]).addTo(map)
         .bindPopup('A Leaflet marker in TypeScript!')
+        .setIcon(L.icon({
+          iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
+          iconSize: [38, 95],
+          iconAnchor: [22, 94],
+          popupAnchor: [-3, -76]
+        }))
         .openPopup();
     }})
 
@@ -62,6 +68,13 @@ enum Status {
     loadData();
   } ,[]);
 
+  const customIcon = L.icon({
+    iconUrl: "https://leafletjs.com/examples/custom-icons/leaf-green.png",
+    iconSize: [38, 95],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76]
+  });
+  
   return (
     
     <div
@@ -83,7 +96,7 @@ enum Status {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={[51.505, -0.09]}>
+        <Marker position={[51.505, -0.09]} icon={customIcon}>
           <Popup>
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
