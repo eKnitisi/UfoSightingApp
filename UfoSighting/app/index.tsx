@@ -1,7 +1,7 @@
 "use dom"
 
 import { Text, View } from "react-native";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useRef} from "react";
 import { MapContainer, Marker, Popup, SVGOverlay, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import { LatLngTuple } from "leaflet";
@@ -11,15 +11,20 @@ import * as L from "leaflet";
 
 export default function Index() {
 
-  const map = L.map('map').setView([51.505, -0.09], 13);
+  const mapRef = useRef(null);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
-  
-  L.marker([51.505, -0.09]).addTo(map)
-    .bindPopup('A Leaflet marker in TypeScript!')
-    .openPopup();
+  useEffect(() => {
+    if (mapRef.current) {
+      const map = L.map(mapRef.current).setView([51.505, -0.09], 13);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      L.marker([51.505, -0.09]).addTo(map)
+        .bindPopup('A Leaflet marker in TypeScript!')
+        .openPopup();
+    }})
 
   interface UfoSighting {
     id: number;
@@ -59,18 +64,31 @@ enum Status {
 
   return (
     
-    <View
+    <div
       style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        height: '100vh',
+        width: '100vw'
       }}
     >
-<MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "100vh", width: "100%" }}>
-  
-    
-
-</MapContainer>
-    </View>
+      <MapContainer
+        center={[51.505, -0.09]}
+        zoom={13}
+        scrollWheelZoom={false}
+        style={{ pointerEvents: 'auto', height: '100%', width: '100%' }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Marker position={[51.505, -0.09]}>
+          <Popup>
+            A pretty CSS3 popup. <br /> Easily customizable.
+          </Popup>
+        </Marker>
+      </MapContainer>
+    </div>
   );
 }
