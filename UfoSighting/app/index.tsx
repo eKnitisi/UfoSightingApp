@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal,Image } from "react-native";
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
@@ -52,7 +53,11 @@ export default function App() {
   }
 
   return (
+    
     <View style={styles.container}>
+  <Link href="/allSightings" style={styles.addButton}>
+  Go to all sightings
+      </Link>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
@@ -142,5 +147,20 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     padding: 10,
     borderRadius: 5,
+  },
+
+  addButton: {
+    position: "absolute",  // Plaats de button bovenaan
+    top: 20,               // 20px van de bovenkant
+    left: 10,              // 10px van de linkerzijde
+    backgroundColor: "blue",
+    padding: 10,
+    borderRadius: 5,
+    zIndex: 1,             // Zorg ervoor dat de knop boven de kaart komt
+    color: "white",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
   },
 });
