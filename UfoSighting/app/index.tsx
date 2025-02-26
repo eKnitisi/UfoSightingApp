@@ -67,7 +67,7 @@ export default function App() {
         }}
       >
         {ufoData.map((sighting) => (
-          <Marker
+          <Marker onPress={() => handlePress(sighting)}
             key={sighting.id}
             coordinate={{
               latitude: sighting.location.latitude,
@@ -82,6 +82,7 @@ export default function App() {
                   Status: {sighting.status.toUpperCase()}
                 </Text>
               </View>
+              <Text style={styles.title}>Tap for more info</Text>
             </Callout>
           </Marker>
         ))}
