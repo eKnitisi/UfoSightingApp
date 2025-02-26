@@ -1,6 +1,5 @@
 "use dom"
 
-import { Text, View } from "react-native";
 import {useState, useEffect, useRef} from "react";
 import { MapContainer, Marker, Popup, SVGOverlay, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
@@ -12,6 +11,8 @@ import * as L from "leaflet";
 export default function Index() {
 
   const mapRef = useRef(null);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     if (mapRef.current) {
@@ -30,6 +31,7 @@ export default function Index() {
           popupAnchor: [-3, -76]
         }))
         .openPopup();
+      
     }})
 
   interface UfoSighting {
@@ -90,7 +92,7 @@ enum Status {
         center={[51.505, -0.09]}
         zoom={13}
         scrollWheelZoom={false}
-        style={{ pointerEvents: 'auto', height: '100%', width: '100%' }}
+        style={{ height: "100%", width: "100%" }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -101,5 +103,33 @@ enum Status {
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
         </Marker>
-        </MapContainer>
-      </div>)}
+        { !loading &&
+          ufoData.map((sighting) => (
+            <Marker
+              key={sighting.id}
+              position={[
+                sighting.location.latitude,
+                sighting.location.longitude,
+              ]}
+              icon={customIcon}
+            >
+              <Popup>
+                <b>{sighting.witnessName}</b> <br />
+                <img
+                  src={sighting.picture}
+                  alt="UFO"
+                  style={{
+                    width: "100px",
+                    height: "auto",
+                    borderRadius: "5px",
+                  }}
+                />
+                <p>{sighting.description}</p>
+                <small>{new Date(sighting.dateTime).toLocaleString()}</small>
+              </Popup>
+            </Marker>
+          ))}
+      </MapContainer>
+    </div>
+  );
+}
