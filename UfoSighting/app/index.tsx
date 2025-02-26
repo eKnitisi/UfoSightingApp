@@ -18,7 +18,6 @@ interface UfoSighting {
 
 export default function App() {
   const [ufoData, setUfoData] = useState<UfoSighting[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -30,8 +29,6 @@ export default function App() {
         setUfoData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
       }
     }
     fetchData();
