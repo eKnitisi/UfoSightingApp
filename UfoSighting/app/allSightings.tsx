@@ -1,3 +1,4 @@
+import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, FlatList, Modal, Image } from 'react-native';
 
@@ -59,9 +60,9 @@ export default function AboutScreen() {
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderItem}
           />
-                    <TouchableOpacity style={styles.addSightingButton} onPress={() => handlePress()}>
+                    <Link href={"/camera"} style={styles.addSightingButton}>
             <Text style={styles.buttonText}>Add a sighting</Text>
-          </TouchableOpacity>
+          </Link>
           {selectedSighting && (
             <Modal transparent={true} visible={true} onRequestClose={() => setSelectedSighting(null)}>
               <View style={styles.modalContainer}>
