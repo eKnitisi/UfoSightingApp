@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal,Image } from "react-native";
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 
 interface UfoSighting {
@@ -19,6 +19,8 @@ interface UfoSighting {
 export default function App() {
   const [ufoData, setUfoData] = useState<UfoSighting[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedSighting, setSelectedSighting] = useState<UfoSighting | null>(null);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -38,12 +40,7 @@ export default function App() {
   }, []);
 
   const handlePress = (sighting: UfoSighting) => {
-    Alert.alert(
-      "UFO Sighting",
-      `Witness: ${sighting.witnessName}\nDate: ${
-        sighting.dateTime
-      }\nStatus: ${sighting.status.toUpperCase()}`
-    );
+      setSelectedSighting(sighting);
   };
 
   if (loading) {
@@ -74,16 +71,21 @@ export default function App() {
               longitude: sighting.location.longitude,
             }}
           >
-            <Callout>
-              <View style={styles.callout}>
-                <Text style={styles.title}>{sighting.witnessName}</Text>
-                <Text>{sighting.description}</Text>
-                <Text style={styles.status}>
-                  Status: {sighting.status.toUpperCase()}
-                </Text>
-              </View>
-              <Text style={styles.title}>Tap for more info</Text>
-            </Callout>
+            {selectedSighting && (
+  <Modal transparent={true} visible={true} onRequestClose={() => setSelectedSighting(null)}>
+    <View style={styles.modalContainer}>
+      <View style={styles.modalContent}>
+        <Text style={styles.title}>{selectedSighting.witnessName}</Text>
+        <Image source={{ uri: selectedSighting.picture }} style={styles.image} />
+        <Text>{selectedSighting.description}</Text>
+        <Text style={styles.status}>Status: {selectedSighting.status.toUpperCase()}</Text>
+        <TouchableOpacity onPress={() => setSelectedSighting(null)} style={styles.closeButton}>
+          <Text style={{ color: "white" }}>Sluiten</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </Modal>
+)}
           </Marker>
         ))}
       </MapView>
@@ -104,10 +106,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  callout: {
-    width: 200,
-    padding: 5,
-  },
   title: {
     fontWeight: "bold",
     fontSize: 14,
@@ -115,5 +113,30 @@ const styles = StyleSheet.create({
   status: {
     fontSize: 12,
     color: "gray",
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)", // Donkere overlay
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  image: {
+    width: 250,
+    height: 150,
+    borderRadius: 10,
+    marginVertical: 10,
+  },
+  closeButton: {
+    marginTop: 10,
+    backgroundColor: "red",
+    padding: 10,
+    borderRadius: 5,
   },
 });
