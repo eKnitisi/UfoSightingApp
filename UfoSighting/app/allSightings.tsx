@@ -59,6 +59,9 @@ export default function AboutScreen() {
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderItem}
           />
+                    <TouchableOpacity style={styles.addSightingButton} onPress={() => handlePress()}>
+            <Text style={styles.buttonText}>Add a sighting</Text>
+          </TouchableOpacity>
           {selectedSighting && (
             <Modal transparent={true} visible={true} onRequestClose={() => setSelectedSighting(null)}>
               <View style={styles.modalContainer}>
@@ -152,6 +155,12 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   closeButton: {
+    marginTop: 10,
+    backgroundColor: "red",
+    padding: 10,
+    borderRadius: 5,
+  },
+  addSightingButton: {
     marginTop: 10,
     backgroundColor: "red",
     padding: 10,
