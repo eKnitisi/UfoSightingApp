@@ -78,6 +78,11 @@ export default function App() {
         <Text style={styles.title}>{selectedSighting.witnessName}</Text>
         <Image source={{ uri: selectedSighting.picture }} style={styles.image} />
         <Text>{selectedSighting.description}</Text>
+        <Text></Text>
+        <Text>{selectedSighting.dateTime}</Text>
+        <Text>{selectedSighting.witnessContact}</Text>
+        <Text></Text>
+
         <Text style={styles.status}>Status: {selectedSighting.status.toUpperCase()}</Text>
         <TouchableOpacity onPress={() => setSelectedSighting(null)} style={styles.closeButton}>
           <Text style={{ color: "white" }}>Sluiten</Text>
@@ -116,7 +121,6 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)", // Donkere overlay
     justifyContent: "center",
     alignItems: "center",
   },
