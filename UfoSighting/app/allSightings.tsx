@@ -1,6 +1,7 @@
 import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, FlatList, Modal, Image } from 'react-native';
+import { formatDate } from './index';
 
 interface UfoSighting {
     id: number;
@@ -71,10 +72,12 @@ export default function AboutScreen() {
                   <Image source={{ uri: selectedSighting.picture }} style={styles.image} />
                   <Text>{selectedSighting.description}</Text>
                   <Text></Text>
-                  <Text>{selectedSighting.dateTime}</Text>
+                  <Text>{formatDate(new Date(selectedSighting.dateTime))}</Text>
                   <Text>{selectedSighting.witnessContact}</Text>
                   <Text></Text>
-          
+                  <Text>At latitude: {selectedSighting.location.latitude}</Text>
+                  <Text>and longitude: {selectedSighting.location.longitude}</Text>
+                  <Text></Text>
                   <Text style={styles.status}>Status: {selectedSighting.status.toUpperCase()}</Text>
                   <TouchableOpacity onPress={() => setSelectedSighting(null)} style={styles.closeButton}>
                     <Text style={{ color: "white" }}>Close</Text>

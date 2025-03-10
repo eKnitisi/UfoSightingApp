@@ -1,18 +1,17 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
-
+  const cameraRef = useRef<CameraView>(null);
   if (!permission) {
-    // Camera permissions are still loading.
     return <View />;
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
         <Text style={styles.message}>We need your permission to show the camera</Text>
@@ -25,12 +24,32 @@ export default function App() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
+  const takePicture = async () => {
+    if (cameraRef.current) {
+      const photo = await cameraRef.current.takePictureAsync();
+      if(photo){
+        await AsyncStorage.setItem('photo', photo.uri);
+        alert('Picture taken and saved!');
+  
+      }
+      else{
+        alert('Something went wrong!');
+      }
+    }
+  };
+
   return (
     <View style={styles.container}>
       <CameraView style={styles.camera} facing={facing}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
             <Text style={styles.text}>Flip Camera</Text>
+          </TouchableOpacity>
+          <Text style={styles.button}>
+            <Text style={styles.separator}>|</Text>
+          </Text>          
+          <TouchableOpacity style={styles.button} onPress={takePicture}>
+            <Text style={styles.text}>Take Picture</Text>
           </TouchableOpacity>
         </View>
       </CameraView>
@@ -64,6 +83,17 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+
+
+  },
+  separator: {
+    textAlign: 'center',
+    fontSize: 70,
+    lineHeight: 60,
+    height: 'auto',
+    width: 'auto',
     color: 'white',
   },
 });
