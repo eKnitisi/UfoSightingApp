@@ -33,7 +33,7 @@ export default function AboutScreen() {
     const renderItem = ({ item }: { item: UfoSighting }) => (
         <View style={styles.item}>
           <Text style={styles.title}>{item.witnessName}</Text>
-          <Text>{item.dateTime}</Text>
+          <Text>{formatDate(new Date(item.dateTime))}</Text>
           <Text>{item.status}</Text>
           <TouchableOpacity style={styles.detailsButton} onPress={() => handlePress(item)}>
             <Text style={styles.buttonText}>View Details</Text>
