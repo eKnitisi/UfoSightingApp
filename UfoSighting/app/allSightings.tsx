@@ -2,20 +2,7 @@ import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, FlatList, Modal, Image } from 'react-native';
 import { formatDate } from './index';
-
-interface UfoSighting {
-    id: number;
-    witnessName: string;
-    location: {
-      latitude: number;
-      longitude: number;
-    };
-    description: string;
-    picture: string;
-    status: string;
-    dateTime: string;
-    witnessContact: string;
-  }
+import { UfoSighting } from './UfoSighting';
 
 export default function AboutScreen() {
     const [ufoData, setUfoData] = useState<UfoSighting[]>([]);

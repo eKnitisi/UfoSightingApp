@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { Button, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
+import { UfoSighting } from './UfoSighting';
 
 
 export default function App() {
@@ -105,7 +106,7 @@ return (
       <Modal visible={modalVisible} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalText}>Enter a name for the photo:</Text>
+            <Text style={styles.modalText}>Enter a name for the sighting:</Text>
             <TextInput
               style={styles.input}
               placeholder="Photo name"

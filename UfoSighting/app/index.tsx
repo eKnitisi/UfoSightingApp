@@ -2,22 +2,7 @@ import { Link } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal,Image } from "react-native";
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
-import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-
-
-interface UfoSighting {
-  id: number;
-  witnessName: string;
-  location: {
-    latitude: number;
-    longitude: number;
-  };
-  description: string;
-  picture: string;
-  status: string;
-  dateTime: string;
-  witnessContact: string;
-}
+import { UfoSighting } from "./UfoSighting";
 
 export const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('en-GB', { 
