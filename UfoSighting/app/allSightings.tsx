@@ -77,7 +77,7 @@ export default function AboutScreen() {
           
                   <Text style={styles.status}>Status: {selectedSighting.status.toUpperCase()}</Text>
                   <TouchableOpacity onPress={() => setSelectedSighting(null)} style={styles.closeButton}>
-                    <Text style={{ color: "white" }}>Sluiten</Text>
+                    <Text style={{ color: "white" }}>Close</Text>
                   </TouchableOpacity>
                 </View>
               </View>

@@ -42,6 +42,17 @@ export default function App() {
     fetchData();
   }, []);
 
+  const formatDate = (date: Date) => {
+    return new Intl.DateTimeFormat('en-GB', { 
+      day: '2-digit', 
+      month: 'long', 
+      year: 'numeric', 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      hour12: false 
+    }).format(date);
+  };
+
   const handlePress = (sighting: UfoSighting) => {
       setSelectedSighting(sighting);
   };
@@ -86,13 +97,13 @@ export default function App() {
         <Image source={{ uri: selectedSighting.picture }} style={styles.image} />
         <Text>{selectedSighting.description}</Text>
         <Text></Text>
-        <Text>{selectedSighting.dateTime}</Text>
+        <Text>{formatDate(new Date(selectedSighting.dateTime))}</Text>
         <Text>{selectedSighting.witnessContact}</Text>
         <Text></Text>
 
         <Text style={styles.status}>Status: {selectedSighting.status.toUpperCase()}</Text>
         <TouchableOpacity onPress={() => setSelectedSighting(null)} style={styles.closeButton}>
-          <Text style={{ color: "white" }}>Sluiten</Text>
+          <Text style={{ color: "white" }}>Close</Text>
         </TouchableOpacity>
       </View>
     </View>
