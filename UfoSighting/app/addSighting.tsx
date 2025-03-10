@@ -1,10 +1,12 @@
+import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 export default function NewScreen() {
+    const { URI } = useLocalSearchParams();
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>This is the new screen</Text>
+      <Text style={styles.text}>photo uri: {URI}</Text>
     </View>
   );
 }

@@ -2,18 +2,16 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
 import { Button, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { router } from 'expo-router';
-import { UfoSighting } from './UfoSighting';
+import { router, useNavigation } from 'expo-router';
 
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [photoName, setPhotoName] = useState('');
-
   const [isCameraReady, setIsCameraReady] = useState(false);
   const cameraRef = useRef<CameraView | null>(null);
+
+  const [photoUri, setPhotoUri] = useState<string | null>(null);
 
 
   if (!permission) {
@@ -36,32 +34,23 @@ export default function App() {
   function toggleCameraFacing() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
-  
-  const storeData = async (photo: any) => {
-    try {
-      await AsyncStorage.setItem(photoName, photo);
-    } catch (e) {
-    alert('Failed to save the photo. Please try again.');
-    }
-  }; 
+
 
   const takePicture = async () => {
-    console.log("test2")
     if (cameraRef.current && isCameraReady) {
       try{
         const options = {
-          quality: 0.8, // You can adjust the quality
-          base64: true, // Include base64 encoded image
-          skipProcessing: false, // Process the image before returning
+          quality: 0.8, 
+          base64: true,
+          skipProcessing: false,
         };
 
         const photo = await cameraRef.current.takePictureAsync(options);
-        storeData(photo);
+        if(photo){
+          setPhotoUri(photo.uri);
+          router.push({ pathname: '/addSighting', params: { URI: photo.uri } });
 
-        setPhotoName('');
-        alert('Picture taken and saved!');
-        router.replace('/addSighting');
-
+        }
       } catch (error) {
         console.error('Error taking picture:', error);
       
@@ -69,23 +58,6 @@ export default function App() {
     } else {
       alert('Camera is not ready yet.');
     }
-  };
-
-  const savePhoto = async () => {
-    const existingPhoto = await AsyncStorage.getItem(photoName.trim());
-    console.log(existingPhoto);
-    if (existingPhoto !== null) {
-      alert('A photo with this name already exists. Please choose a different name.');
-      return;
-    } 
-    if(photoName.trim() === ''){
-      alert('Please enter a name for the photo.');
-      return;
-    }
-    setPhotoName(photoName.trim());
-    setModalVisible(false);
-    console.log(photoName);
-    takePicture();  
   };
 
 return (
@@ -98,26 +70,11 @@ return (
           <Text style={styles.button}>
             <Text style={styles.separator}>|</Text>
           </Text>          
-          <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
+          <TouchableOpacity style={styles.button} onPress={takePicture}>
             <Text style={styles.text}>Take Picture</Text>
           </TouchableOpacity>
         </View>
       </CameraView>
-      <Modal visible={modalVisible} transparent animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalText}>Enter a name for the sighting:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Photo name"
-              value={photoName}
-              onChangeText={setPhotoName}
-            />
-            <Button title="Save Photo" onPress={savePhoto} />
-            <Button title="Cancel" color="red" onPress={() => setModalVisible(false)} />
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 }

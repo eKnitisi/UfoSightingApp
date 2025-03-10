@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal,Image } from "re
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import { UfoSighting } from "./UfoSighting";
 
+
 export const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('en-GB', { 
     day: '2-digit', 
@@ -53,7 +54,7 @@ export default function App() {
   }
 
   return (
-    
+
     <View style={styles.container}>
   <Link href="/allSightings" style={styles.addButton}>
   Go to all sightings
@@ -166,3 +167,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+
