@@ -10,8 +10,9 @@ export default function App() {
   const [permission, requestPermission] = useCameraPermissions();
   const [modalVisible, setModalVisible] = useState(false);
   const [photoName, setPhotoName] = useState('');
-  const passPhotoName : string = '';
-  const cameraRef = useRef(null);
+
+  const [isCameraReady, setIsCameraReady] = useState(false);
+  const cameraRef = useRef<CameraView | null>(null);
 
 
   if (!permission) {
@@ -27,26 +28,45 @@ export default function App() {
     );
   }
 
+  const onCameraReady = () => {
+    setIsCameraReady(true);
+  };
+
   function toggleCameraFacing() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
+  
+  const storeData = async (photo: any) => {
+    try {
+      await AsyncStorage.setItem(photoName, photo);
+    } catch (e) {
+    alert('Failed to save the photo. Please try again.');
+    }
+  }; 
 
   const takePicture = async () => {
     console.log("test2")
-    if (cameraRef.current) {
-      console.log("test3")
-      const photo = await cameraRef.takePictureAsync();
-      console.log("photo lukt")
-      if(photo){
-        console.log(photo.uri);
-        await AsyncStorage.setItem(photoName, photo.uri);
+    if (cameraRef.current && isCameraReady) {
+      try{
+        const options = {
+          quality: 0.8, // You can adjust the quality
+          base64: true, // Include base64 encoded image
+          skipProcessing: false, // Process the image before returning
+        };
+
+        const photo = await cameraRef.current.takePictureAsync(options);
+        storeData(photo);
+
         setPhotoName('');
         alert('Picture taken and saved!');
         router.replace('/addSighting');
+
+      } catch (error) {
+        console.error('Error taking picture:', error);
+      
       }
-      else{
-        alert('Something went wrong!');
-      }
+    } else {
+      alert('Camera is not ready yet.');
     }
   };
 
@@ -67,9 +87,9 @@ export default function App() {
     takePicture();  
   };
 
-  return (
+return (
     <View style={styles.container}>
-      <CameraView ref={cameraRef} style={styles.camera} facing={facing}>
+      <CameraView ref={cameraRef} style={styles.camera} facing={facing} onCameraReady={onCameraReady}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
             <Text style={styles.text}>Flip Camera</Text>
@@ -100,6 +120,7 @@ export default function App() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
