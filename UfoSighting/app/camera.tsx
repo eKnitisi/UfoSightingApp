@@ -2,6 +2,7 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
 import { Button, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { router, useNavigation } from 'expo-router';
+import * as FileSystem from 'expo-file-system';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -33,6 +34,21 @@ export default function App() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
+  const savePhotoPermanently = async (photoURI: string) => {
+    try {
+      const fileName = `ufo_${Date.now()}.jpg`;
+      const newPath = `${FileSystem.documentDirectory}${fileName}`;
+  
+      await FileSystem.copyAsync({
+        from: photoURI,
+        to: newPath,
+      });
+      return newPath;
+    } catch(e){
+      console.log("Foto opslaan mislukt")
+      return null;
+    }
+  }
 
   const takePicture = async () => {
     if (cameraRef.current && isCameraReady) {
@@ -45,8 +61,9 @@ export default function App() {
 
         const photo = await cameraRef.current.takePictureAsync(options);
         if(photo){
-          setPhotoUri(photo.uri);
-          router.push({ pathname: '/addSighting', params: { URI: photo.uri } });
+          const permanentURI = await savePhotoPermanently(photo.uri);
+          setPhotoUri(permanentURI);
+          router.push({ pathname: '/addSighting', params: { URI: permanentURI } });
 
         }
       } catch (error) {

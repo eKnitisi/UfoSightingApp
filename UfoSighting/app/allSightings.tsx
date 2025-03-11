@@ -19,7 +19,8 @@ export default function AboutScreen() {
   }, [combinedData, loadingData]);
 
     const handlePress = (sighting: UfoSighting) => {
-        setSelectedSighting(sighting);
+      console.log(sighting.picture);
+      setSelectedSighting(sighting);
     };
 
     const renderItem = ({ item }: { item: UfoSighting }) => (

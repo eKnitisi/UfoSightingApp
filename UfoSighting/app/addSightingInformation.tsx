@@ -3,7 +3,6 @@ import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity, TextInput } from 'react-native';
 import UfoSighting from './UfoSighting';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { formatDate } from '.';
 
 export default function AddSightingInformationScreen() {
     const { photoURI } = useLocalSearchParams();
@@ -26,6 +25,7 @@ export default function AddSightingInformationScreen() {
 
     const saveSighting = () => {
         const location = { latitude: Number(lat), longitude: Number(long) };
+        //console.log(String(photoURI))
         const newSighting: UfoSighting = {
           id: Date.now(),
           witnessName,
@@ -68,7 +68,7 @@ export default function AddSightingInformationScreen() {
 <TextInput
   style={styles.input}
   placeholder="Status"
-  value={witnessContact}
+  value={status}
   onChangeText={setStatus}
 />
 
