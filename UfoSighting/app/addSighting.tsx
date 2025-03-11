@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 
-export default function NewScreen() {
+export default function addSighting() {
     const { URI } = useLocalSearchParams();
     const mapRef = useRef<MapView | null>(null);
 
@@ -12,20 +12,21 @@ export default function NewScreen() {
       const camera = await mapRef.current.getCamera();
       const { latitude, longitude } = camera.center;
       
-      router.push({ pathname: '/addSighting', params: { photoURI: URI } });
+      router.push({ pathname: '/addSightingInformation', params: { photoURI: URI, lat: latitude, long: longitude } });
 
     }  }
 
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={{
           latitude: 51.505,
           longitude: -0.09,
-          latitudeDelta: 10,
-          longitudeDelta: 10,
+          latitudeDelta: 25,
+          longitudeDelta: 25,
         }}
       >
       </MapView>

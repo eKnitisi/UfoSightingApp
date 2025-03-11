@@ -64,8 +64,8 @@ export default function App() {
         initialRegion={{
           latitude: 51.505,
           longitude: -0.09,
-          latitudeDelta: 10,
-          longitudeDelta: 10,
+          latitudeDelta: 25,
+          longitudeDelta: 25,
         }}
       >
         {ufoData.map((sighting) => (
