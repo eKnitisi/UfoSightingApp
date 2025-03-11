@@ -8,5 +8,6 @@ export default function RootLayout() {
   <Stack.Screen name="camera" options={{ title: 'Camera' }} />
   <Stack.Screen name="addSighting" options={{ title: 'Add sighting' }} />
   <Stack.Screen name="addSightingInformation" options={{ title: 'Add Info' }} />
+  <Stack.Screen name="allUfoData" options={{ title: 'All data' }} />
 </Stack>;
 }

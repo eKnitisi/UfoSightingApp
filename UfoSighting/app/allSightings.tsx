@@ -2,17 +2,26 @@ import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, FlatList, Modal, Image } from 'react-native';
 import { formatDate } from './index';
-import { UfoSighting } from './UfoSighting';
+import UfoSighting from './UfoSighting';
+import getAllData from './allUfoData';
 
 export default function AboutScreen() {
     const [ufoData, setUfoData] = useState<UfoSighting[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedSighting, setSelectedSighting] = useState<UfoSighting | null>(null);
-  
-  
+    const { combinedData, loadingData } = getAllData();
+
+    useEffect(() => {
+      if (!loadingData && combinedData.length > 0) {
+          setUfoData(combinedData);
+          setLoading(false); 
+      }
+  }, [combinedData, loadingData]);
+
     const handlePress = (sighting: UfoSighting) => {
         setSelectedSighting(sighting);
     };
+    /*
     useEffect(() => {
       async function fetchData() {
         try {
@@ -29,7 +38,7 @@ export default function AboutScreen() {
       }
       fetchData();
     }, []);
-  
+  */
     const renderItem = ({ item }: { item: UfoSighting }) => (
         <View style={styles.item}>
           <Text style={styles.title}>{item.witnessName}</Text>
@@ -43,6 +52,9 @@ export default function AboutScreen() {
     
       return (
         <View style={styles.container}>
+            <Link href="/" style={styles.addButton}>
+            Go to map
+                </Link>
           <FlatList
             data={ufoData}
             keyExtractor={(item) => item.id.toString()}

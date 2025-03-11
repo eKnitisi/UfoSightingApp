@@ -2,7 +2,8 @@ import { Link } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal,Image } from "react-native";
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
-import { UfoSighting } from "./UfoSighting";
+import UfoSighting from "./UfoSighting";
+import getAllData from "./allUfoData";
 
 export const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('en-GB', { 
@@ -19,8 +20,16 @@ export default function App() {
   const [ufoData, setUfoData] = useState<UfoSighting[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedSighting, setSelectedSighting] = useState<UfoSighting | null>(null);
+  const { combinedData, loadingData } = getAllData();
 
+  useEffect(() => {
+    if (!loadingData && combinedData.length > 0) {
+        setUfoData(combinedData);
+        setLoading(false); 
+    }
+}, [combinedData, loadingData]);
 
+  /*
   useEffect(() => {
     async function fetchData() {
       try {
@@ -36,9 +45,10 @@ export default function App() {
       }
     }
     fetchData();
+    
   }, []);
 
-
+*/
 
   const handlePress = (sighting: UfoSighting) => {
       setSelectedSighting(sighting);
