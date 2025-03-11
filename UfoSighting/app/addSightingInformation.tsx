@@ -37,7 +37,7 @@ export default function AddSightingInformationScreen() {
           witnessContact,
         };
         storeData(newSighting);
-        router.push({ pathname: '/allSightings', params: {localSightingId: String(newSighting.id) } });
+        router.push({ pathname: '/allSightings', params: {} });
     }
   return (
     <View style={styles.container}>
