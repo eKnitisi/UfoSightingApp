@@ -1,4 +1,4 @@
-export interface UfoSighting {
+export default interface UfoSighting {
     id: number;
     witnessName: string;
     location: {

@@ -7,5 +7,7 @@ export default function RootLayout() {
   <Stack.Screen name="allSightings" options={{ title: 'All sightings' }} />
   <Stack.Screen name="camera" options={{ title: 'Camera' }} />
   <Stack.Screen name="addSighting" options={{ title: 'Add sighting' }} />
+  <Stack.Screen name="addSightingInformation" options={{ title: 'Add Info' }} />
+
 </Stack>;
 }
