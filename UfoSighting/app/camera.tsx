@@ -1,9 +1,7 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
 import { Button, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useNavigation } from 'expo-router';
-
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');

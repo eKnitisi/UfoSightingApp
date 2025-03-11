@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import UfoSighting from './UfoSighting';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { router } from 'expo-router';
 
 
 export default function getAllData() {

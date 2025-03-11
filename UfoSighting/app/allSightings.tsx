@@ -21,24 +21,7 @@ export default function AboutScreen() {
     const handlePress = (sighting: UfoSighting) => {
         setSelectedSighting(sighting);
     };
-    /*
-    useEffect(() => {
-      async function fetchData() {
-        try {
-          const response = await fetch(
-            "https://sampleapis.assimilate.be/ufo/sightings"
-          );
-          const data: UfoSighting[] = await response.json();
-          setUfoData(data);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-      fetchData();
-    }, []);
-  */
+
     const renderItem = ({ item }: { item: UfoSighting }) => (
         <View style={styles.item}>
           <Text style={styles.title}>{item.witnessName}</Text>
@@ -60,7 +43,7 @@ export default function AboutScreen() {
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderItem}
           />
-                    <Link href={"/camera"} style={styles.addSightingButton}>
+          <Link href={"/camera"} style={styles.addSightingButton}>
             <Text style={styles.buttonText}>Add a sighting</Text>
           </Link>
           {selectedSighting && (

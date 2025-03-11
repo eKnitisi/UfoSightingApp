@@ -29,27 +29,6 @@ export default function App() {
     }
 }, [combinedData, loadingData]);
 
-  /*
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch(
-          "https://sampleapis.assimilate.be/ufo/sightings"
-        );
-        const data: UfoSighting[] = await response.json();
-        setUfoData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-    
-  }, []);
-
-*/
-
   const handlePress = (sighting: UfoSighting) => {
       setSelectedSighting(sighting);
   };
@@ -162,13 +141,13 @@ const styles = StyleSheet.create({
   },
 
   addButton: {
-    position: "absolute",  // Plaats de button bovenaan
-    top: 20,               // 20px van de bovenkant
-    left: 10,              // 10px van de linkerzijde
+    position: "absolute",
+    top: 20,
+    left: 10,
     backgroundColor: "blue",
     padding: 10,
     borderRadius: 5,
-    zIndex: 1,             // Zorg ervoor dat de knop boven de kaart komt
+    zIndex: 1,
     color: "white",
   },
   buttonText: {

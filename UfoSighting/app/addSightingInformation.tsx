@@ -1,9 +1,9 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity, TextInput } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import UfoSighting from './UfoSighting';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { formatDate } from '.';
 
 export default function AddSightingInformationScreen() {
     const { photoURI } = useLocalSearchParams();
@@ -63,6 +63,13 @@ export default function AddSightingInformationScreen() {
   placeholder="Contact"
   value={witnessContact}
   onChangeText={setWitnessContact}
+/>
+
+<TextInput
+  style={styles.input}
+  placeholder="Status"
+  value={witnessContact}
+  onChangeText={setStatus}
 />
 
 <Text style={styles.label}>Date and time: {new Date().toLocaleString()}</Text>
