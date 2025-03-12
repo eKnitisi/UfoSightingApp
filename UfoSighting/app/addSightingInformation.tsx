@@ -24,6 +24,11 @@ export default function AddSightingInformationScreen() {
       };
 
     const saveSighting = () => {
+
+      if(!witnessName || !description || !witnessContact || !status) {
+        alert('Please fill in all fields');
+        return;
+      }
         const location = { latitude: Number(lat), longitude: Number(long) };
         //console.log(String(photoURI))
         const newSighting: UfoSighting = {

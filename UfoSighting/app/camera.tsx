@@ -1,14 +1,18 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
-import { Button, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Button, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View,Image } from 'react-native';
 import { router, useNavigation } from 'expo-router';
 import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [isCameraReady, setIsCameraReady] = useState(false);
   const cameraRef = useRef<CameraView | null>(null);
+  const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions();
+
 
   const [photoUri, setPhotoUri] = useState<string | null>(null);
 
@@ -36,10 +40,19 @@ export default function App() {
 
   const savePhotoPermanently = async (photoURI: string) => {
     try {
+      if (!mediaPermission) {
+        requestMediaPermission();
+      }
+      const directory = FileSystem.documentDirectory + 'ufo/';
+    
+      const dirInfo = await FileSystem.getInfoAsync(directory);
+      if (!dirInfo.exists) {
+        await FileSystem.makeDirectoryAsync(directory, { intermediates: true });
+      }
       const fileName = `ufo_${Date.now()}.jpg`;
-      const newPath = `${FileSystem.documentDirectory}${fileName}`;
+      const newPath = `${directory}${fileName}`;
   
-      await FileSystem.copyAsync({
+        await FileSystem.copyAsync({
         from: photoURI,
         to: newPath,
       });
@@ -53,17 +66,13 @@ export default function App() {
   const takePicture = async () => {
     if (cameraRef.current && isCameraReady) {
       try{
-        const options = {
-          quality: 0.8, 
-          base64: true,
-          skipProcessing: false,
-        };
 
-        const photo = await cameraRef.current.takePictureAsync(options);
+        const photo = await cameraRef.current.takePictureAsync();
         if(photo){
           const permanentURI = await savePhotoPermanently(photo.uri);
-          setPhotoUri(permanentURI);
-          router.push({ pathname: '/addSighting', params: { URI: permanentURI } });
+          setPhotoUri(photo.uri);
+
+          router.push({ pathname: "/addSighting", params: { URI: permanentURI } });
 
         }
       } catch (error) {
@@ -98,6 +107,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+  },
+  image: {
+    width: 250,
+    height: 150,
+    borderRadius: 10,
+    marginVertical: 10,
+    zIndex:1,
   },
   message: {
     textAlign: 'center',

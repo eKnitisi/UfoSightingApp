@@ -29,6 +29,8 @@ export default function getAllData() {
     useEffect(() => {
         async function loadLocalData() {
             try {
+              //await AsyncStorage.clear();
+
                 const keys = await AsyncStorage.getAllKeys();
                 const items = await AsyncStorage.multiGet(keys);
                 
